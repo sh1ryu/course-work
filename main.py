@@ -38,7 +38,8 @@ def convert_to_all():
 
 root = tk.Tk()
 root.title('Конвертер систем счисления')
-root.geometry('400x150')
+root.geometry('400x100')
+
 
 label = tk.Label(root, text='Выберите систему счисления:')
 label.pack()
