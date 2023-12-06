@@ -6,7 +6,8 @@ def convert_to_all():
     try:
         file_path = filedialog.askopenfilename(initialdir=os.getcwd(), title='Выберите файл', filetypes=(('Текстовые файлы', '*.txt'),))
         if file_path:
-            system = system_var.get()
+            from_system = from_var.get()
+            to_system = to_var.get()
             output_file_path = os.path.join(os.path.dirname(file_path), 'output.txt')
 
             with open(file_path, 'r') as file:
@@ -15,19 +16,17 @@ def convert_to_all():
                 with open(output_file_path, 'w', encoding='utf-8') as output_file:
                     for number in numbers:
                         try:
-                            decimal = int(number)
+                            decimal = int(number, int(from_system))
 
-                            if system == 'Двоичная':
-                                converted_number = bin(decimal)[2:]
-                            elif system == 'Восьмеричная':
-                                converted_number = oct(decimal)[2:]
-                            elif system == 'Шестнадцатеричная':
-                                converted_number = hex(decimal)[2:].upper()
-                            elif system == 'Десятичная':
-                                converted_number = str(decimal)
+                            converted_number = ""
 
-                            output_file.write(f'Число {number} в {system.lower()} системе: {converted_number}\n')
-                        
+                            if int(to_system) < 1 or int(to_system) > 50:
+                                print("Система счисления должна быть от 1 до 50")
+                            else:
+                                converted_number = format(decimal, f"0{to_system}d")
+
+                            output_file.write(f'Число {number} из системы счисления {from_system} в систему счисления {to_system}: {converted_number}\n')
+
                         except ValueError:
                             print(f"Ошибка преобразования числа: {number}")
 
@@ -38,17 +37,21 @@ def convert_to_all():
 
 root = tk.Tk()
 root.title('Конвертер систем счисления')
-root.geometry('400x100')
+root.geometry('400x200')
 
+from_label = tk.Label(root, text='Выберите систему счисления (из):')
+from_label.pack()
 
-label = tk.Label(root, text='Выберите систему счисления:')
-label.pack()
+from_var = tk.StringVar(root)
+from_entry = tk.Entry(root, textvariable=from_var)
+from_entry.pack()
 
-system_var = tk.StringVar(root)
-system_var.set('Двоичная')
+to_label = tk.Label(root, text='Выберите систему счисления (в):')
+to_label.pack()
 
-system_menu = tk.OptionMenu(root, system_var, 'Двоичная', 'Восьмеричная', 'Шестнадцатеричная', 'Десятичная')
-system_menu.pack()
+to_var = tk.StringVar(root)
+to_entry = tk.Entry(root, textvariable=to_var)
+to_entry.pack()
 
 button = tk.Button(root, text='Выбрать файл и конвертировать', command=convert_to_all)
 button.pack()
