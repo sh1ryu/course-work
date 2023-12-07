@@ -31,13 +31,15 @@ def convert_to_all():
                             print(f"Ошибка преобразования числа: {number}")
 
             result_label.config(text='Конвертация завершена. Результаты сохранены в файл.')
+
+            os.startfile(output_file_path)
     
     except Exception as e:
         print(f"Произошла ошибка: {str(e)}")
 
 root = tk.Tk()
 root.title('Конвертер систем счисления')
-root.geometry('400x200')
+root.geometry('400x123')
 
 from_label = tk.Label(root, text='Выберите систему счисления (из):')
 from_label.pack()
