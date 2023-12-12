@@ -1,8 +1,14 @@
+'''
+Курсовая работа по программированию.
+'''
 import tkinter as tk
 from tkinter import filedialog
 import os
 
 def convert_to_all():
+    '''
+    Функция конвертирования во все системы счисления.
+    '''
     try:
         file_path = filedialog.askopenfilename(initialdir=os.getcwd(), title='Выберите файл', filetypes=(('Текстовые файлы', '*.txt'),))
         if file_path:
@@ -10,7 +16,7 @@ def convert_to_all():
             to_system = to_var.get()
             output_file_path = os.path.join(os.path.dirname(file_path), 'output.txt')
 
-            with open(file_path, 'r') as file:
+            with open(file_path, 'r', encoding='utf-8') as file:
                 numbers = file.read().split()
 
                 with open(output_file_path, 'w', encoding='utf-8') as output_file:
@@ -25,7 +31,9 @@ def convert_to_all():
                             else:
                                 converted_number = format(decimal, f"0{to_system}d")
 
-                            output_file.write(f'Число {number} из системы счисления {from_system} в систему счисления {to_system}: {converted_number}\n')
+                            output_file.write(f'Число {number} из системы счисления'
+                                              f'{from_system} в систему счисления'
+                                              f' {to_system}: {converted_number}\n')
 
                         except ValueError:
                             print(f"Ошибка преобразования числа: {number}")
@@ -33,9 +41,14 @@ def convert_to_all():
             result_label.config(text='Конвертация завершена. Результаты сохранены в файл.')
 
             os.startfile(output_file_path)
-    
-    except Exception as e:
-        print(f"Произошла ошибка: {str(e)}")
+    except FileNotFoundError:
+        print("Файл не найден.")
+
+    except PermissionError:
+        print("У вас нет разрешения на доступ к файлу.")
+
+    except ValueError as exeption:
+        print(f"Произошла ошибка: {str(exeption)}")
 
 root = tk.Tk()
 root.title('Конвертер систем счисления')
